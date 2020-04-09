@@ -1,3 +1,2 @@
 # picProject
-#没写完
-#有bug
+#没写完，有bug
