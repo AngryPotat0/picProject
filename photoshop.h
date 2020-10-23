@@ -9,7 +9,6 @@
 #include<math.h>
 BYTE **getGrayPicture(BMP_COLOR **Image,int height,int width);
 void deleteGrayImage(BYTE **grayImage,int height);
-void eraseEnableLayer(int **enableLayer,int height,int width);
 int **CreateVisited(int height,int width);
 void deleteVisited(int **visited,int height);
 void magicTool(BMP_FILE *bmp,int y,int x,int range,int shift);

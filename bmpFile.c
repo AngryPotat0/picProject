@@ -4,7 +4,7 @@ BMP_FILE* openBmp(char *path)//读取fp中数据，放入bf中,成功返回1，�
 {
     BMP_FILE *bmp = (BMP_FILE*)malloc(sizeof(BMP_FILE));
     if(bmp == NULL)
-        return NUL;
+        return NULL;
 
     FILE* fp = fopen(path,"rb");
     if(!fp) return 0;
@@ -34,33 +34,17 @@ BMP_FILE* openBmp(char *path)//读取fp中数据，放入bf中,成功返回1，�
         fread(image[i],rowLength,1,fp);
     }
 //set enableLayer
-    int** enableLayer = (int**)malloc(sizeof(int*) * picHeight);
-    for(i = 0;i < picHeight;i++)
-    {
-        enableLayer[i] = (int*)malloc(sizeof(int) * (bmp->picInfo).biWidth);
-        memset(enableLayer[i],0,sizeof(int) * (bmp->picInfo).biWidth);
-    }
-/////////
-    bmp->enableLayer = enableLayer;
+    // int** enableLayer = (int**)malloc(sizeof(int*) * picHeight);
+    // for(i = 0;i < picHeight;i++)
+    // {
+    //     enableLayer[i] = (int*)malloc(sizeof(int) * (bmp->picInfo).biWidth);
+    //     memset(enableLayer[i],0,sizeof(int) * (bmp->picInfo).biWidth);
+    // }
+
+    bmp->enableLayer = createEnableLayer(picHeight,(bmp->picInfo).biWidth);
     (bmp->data).image = image;
     fclose(fp);
     return bmp;
-}
-
-void closeImage(BMP_COLOR **image,int height)
-{
-    int i = 0;
-    for(;i < height;i++)
-        free(image[i]);
-    free(image);
-}
-
-void closeEnableLayer(int **enableLayer,int height)
-{
-    int i = 0;
-    for(;i < height;i++)
-        free(enableLayer[i]);
-    free(enableLayer);
 }
 
 void saveBmp(BMP_FILE *bmp,char* fileName)//生成bmp文件,bmpFileMaker
@@ -107,6 +91,15 @@ BMP_COLOR** createImage(int height,int width,BMP_COLOR color)//创建一个图�
     }
     return Image;
 }
+
+void closeImage(BMP_COLOR **image,int height)
+{
+    int i = 0;
+    for(;i < height;i++)
+        free(image[i]);
+    free(image);
+}
+
 //控制层的创建函数，enableLayer控制诸如复制，粘贴，魔棒工具，油漆桶工具的作用范围
 int** createEnableLayer(int height,int width)
 {
@@ -118,6 +111,24 @@ int** createEnableLayer(int height,int width)
     }
     return enableLayer;
 }
+
+void eraseEnableLayer(int **enableLayer,int height,int width)//enableLayer重置为0，不删除
+{
+    int i,j;
+    for(int i = 0;i < height;i++)
+    {
+        memset(enableLayer[i],0,sizeof(int) * width);
+    }
+}
+
+void closeEnableLayer(int **enableLayer,int height)
+{
+    int i = 0;
+    for(;i < height;i++)
+        free(enableLayer[i]);
+    free(enableLayer);
+}
+
 //释放bmp文件指针所拥有的内存
 void closeBmp(BMP_FILE* bmp)
 {

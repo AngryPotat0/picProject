@@ -31,6 +31,19 @@ BMP_COLOR **extendArray(BMP_COLOR **image,int height,int width,int extend)//图�
 
 }
 
+void closeExImage(COLOR **exImage,int height,int width)
+{
+    if(exImage)
+    {
+        int i;
+        for(i = 0;i < height;i++)
+        {
+            free(exImage[i]);
+        }
+        free(exImage);
+    }
+}
+
 int matrix(COLOR **exImage,int(*kernal)[3],int y,int x,int type,int mod)//x y 为矩阵左上角坐标 type 决定rgb,
 {
     int i,j;
@@ -41,7 +54,8 @@ int matrix(COLOR **exImage,int(*kernal)[3],int y,int x,int type,int mod)//x y �
         {
             for(j = 0;j < 3;j++)
             {
-                sum = sum + (int)exImage[i + y][j + x].blue * *(*(kernal + i) + j);
+                // sum = sum + (int)exImage[i + y][j + x].blue * *(*(kernal + i) + j);
+                sum = sum + (int)exImage[i + y][j + x].blue * kernal[i][j];
             }
         }
     }
@@ -51,7 +65,7 @@ int matrix(COLOR **exImage,int(*kernal)[3],int y,int x,int type,int mod)//x y �
         {
             for(j = 0;j < 3;j++)
             {
-                sum = sum + (int)exImage[i + y][j + x].green * *(*(kernal + i) + j);
+                sum = sum + (int)exImage[i + y][j + x].green * kernal[i][j];
             }
         }
     }
@@ -61,7 +75,7 @@ int matrix(COLOR **exImage,int(*kernal)[3],int y,int x,int type,int mod)//x y �
         {
             for(j = 0;j < 3;j++)
             {
-                sum = sum + (int)exImage[i + y][j + x].red * *(*(kernal + i) + j);
+                sum = sum + (int)exImage[i + y][j + x].red * kernal[i][j];
             }
         }
     }
@@ -77,19 +91,6 @@ int matrix(COLOR **exImage,int(*kernal)[3],int y,int x,int type,int mod)//x y �
         if(sum < 0)return 0;
         if (sum > 255)return 255;
         return sum;
-    }
-}
-
-void closeExImage(COLOR **exImage,int height,int width)
-{
-    if(exImage)
-    {
-        int i;
-        for(i = 0;i < height;i++)
-        {
-            free(exImage[i]);
-        }
-        free(exImage);
     }
 }
 

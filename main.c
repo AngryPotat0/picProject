@@ -11,10 +11,9 @@ int main()
     // printf("pleash input path of image:\n");
     // scanf("%s",&path);
 
-    BMP_FILE *bmp = (BMP_FILE*)malloc(sizeof(BMP_FILE));
-    int k = getBMP(bmp,defPath);
-    useKernal(bmp,k1,0);
-    bmpFileMaker(bmp,"red.bmp");
+    BMP_FILE *bmp = openBmp(defPath);
+    useKernal(bmp,k5,1);
+    saveBmp(bmp,"reds.bmp");
     closeBmp(bmp);
     // BMP_FILE *bbp = (BMP_FILE*)malloc(sizeof(BMP_FILE));
     // int k = getBMP(bmp,defPath);

@@ -53,18 +53,6 @@ void deleteGrayImage(BYTE **grayImage,int height)
     free(grayImage);
 }
 
-void eraseEnableLayer(int **enableLayer,int height,int width)//enableLayer重置为0，不删除
-{
-    int i,j;
-    for(i = 0;i < height;i++)
-    {
-        for(j = 0;j < width;j++)
-        {
-            enableLayer[i][j] = 0;
-        }
-    }
-}
-
 int **CreateVisited(int height,int width)
 {
     int **visited;
@@ -282,5 +270,5 @@ void drawLine(BMP_FILE *bmp,int x1,int y1,int x2,int y2)
 
 void drawCircle(BMP_FILE *bmp,int x,int y,int r)
 {
-    changeY(bmp,y);
+    changeY(bmp,&y);
 }
