@@ -73,7 +73,7 @@ int queue_IsEmpty(Queue* queue)
     {
         return 1;
     }
-    
+
 }
 
 void destoryQueue(Queue* queue)

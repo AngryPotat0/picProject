@@ -1,7 +1,11 @@
 #include"bmpFile.h"
 #include<string.h>
-int getBMP(BMP_FILE *bmp,char *path)//读取fp中数据，放入bf中,成功返回1，失败返回0 
+BMP_FILE* openBmp(char *path)//读取fp中数据，放入bf中,成功返回1，失败返回0 ,getBmp
 {
+    BMP_FILE *bmp = (BMP_FILE*)malloc(sizeof(BMP_FILE));
+    if(bmp == NULL)
+        return NUL;
+
     FILE* fp = fopen(path,"rb");
     if(!fp) return 0;
     fseek(fp,0,0);
@@ -40,7 +44,7 @@ int getBMP(BMP_FILE *bmp,char *path)//读取fp中数据，放入bf中,成功返�
     bmp->enableLayer = enableLayer;
     (bmp->data).image = image;
     fclose(fp);
-    return 1;
+    return bmp;
 }
 
 void closeImage(BMP_COLOR **image,int height)
@@ -59,7 +63,7 @@ void closeEnableLayer(int **enableLayer,int height)
     free(enableLayer);
 }
 
-void bmpFileMaker(BMP_FILE *bmp,char* fileName)//生成bmp文件
+void saveBmp(BMP_FILE *bmp,char* fileName)//生成bmp文件,bmpFileMaker
 {
     BMP_HEADER head = bmp->head;
     BMP_INFOHEAD picInfo = bmp->picInfo;
@@ -122,7 +126,7 @@ void closeBmp(BMP_FILE* bmp)
     free(bmp);
 }
 
-BMP_FILE* createBMpFile(int height,int width,BMP_COLOR color)
+BMP_FILE* createBmpFile(int height,int width,BMP_COLOR color)
 {//FIXME:
     BMP_FILE *bmp;
     bmp->head.bfType = 0x4d42;
