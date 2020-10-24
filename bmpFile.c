@@ -123,6 +123,8 @@ void eraseEnableLayer(int **enableLayer,int height,int width)//enableLayer重置
 
 void closeEnableLayer(int **enableLayer,int height)
 {
+    if(enableLayer == NULL)
+        return;
     int i = 0;
     for(;i < height;i++)
         free(enableLayer[i]);
